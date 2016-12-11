@@ -1,0 +1,19 @@
+/**
+ * Abdulwahab Alkharashi
+ */
+
+
+import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
+import com.maxeler.maxcompiler.v2.kernelcompiler.KernelParameters;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.base.DFEVar;
+
+class MeanKernel extends Kernel {
+
+	protected MeanKernel(KernelParameters parameters) {
+		super(parameters);
+
+		DFEVar the_image = io.input("the_image", dfeInt(32));
+
+		io.output("out_image", the_image, the_image.getType());
+	}
+}

@@ -1,0 +1,38 @@
+/**
+ * Document: MaxCompiler Tutorial (maxcompiler-tutorial.pdf)
+ * Chapter: 11      Example: 1      Name: Simple controlled Input
+ * MaxFile name: SimpleControlledInput
+ * Summary:
+ *    Kernel design using a controlled input. Inputs a and c are continuous
+ *    data streams that will pass inputs to the core whenever there is data
+ *    available. Input b will only pass inputs to the core when the current
+ *    value of input stream c is 1.
+ */
+
+package simplecontrolledinput;
+
+import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
+import com.maxeler.maxcompiler.v2.kernelcompiler.KernelParameters;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.base.DFEVar;
+
+class SimpleControlledInputKernel extends Kernel {
+
+	private static final int dataWidth = 32;
+
+	SimpleControlledInputKernel(KernelParameters parameters) {
+		super(parameters);
+
+		// Inputs
+		DFEVar a = io.input("a", dfeUInt(dataWidth));
+		DFEVar c = io.input("c", dfeBool());
+
+		DFEVar b = io.input("b", dfeUInt(dataWidth), c);
+
+		// Logic
+		DFEVar result = a + (c ? b : 0);
+
+		debug.simPrintf("c: %d\n", c);
+		// Output
+		io.output("y", result, dfeUInt(dataWidth));
+	}
+}

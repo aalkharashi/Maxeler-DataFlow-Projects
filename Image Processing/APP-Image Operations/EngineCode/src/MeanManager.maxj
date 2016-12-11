@@ -1,0 +1,33 @@
+/**
+ * Abdulwahab Alkharashi
+ */
+
+
+import com.maxeler.maxcompiler.v2.build.EngineParameters;
+import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.CPUTypes;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.EngineInterface;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.InterfaceParam;
+import com.maxeler.maxcompiler.v2.managers.standard.Manager;
+import com.maxeler.maxcompiler.v2.managers.standard.Manager.IOType;
+
+class MeanManager {
+
+	public static void main(String[] args) {
+		Manager manager = new Manager(new EngineParameters(args));
+		Kernel kernel = new MeanKernel(manager.makeKernelParameters());
+		manager.setKernel(kernel);
+		manager.setIO(IOType.ALL_CPU);
+		manager.addInterface(modeDefault());
+		manager.build();
+	}
+
+	static EngineInterface modeDefault() {
+		EngineInterface m = new EngineInterface();
+		InterfaceParam size = m.addParam("size", CPUTypes.INT32);
+		m.setTicks("MeanKernel", size);
+		m.setStream("the_image", CPUTypes.INT32, size * CPUTypes.INT32.sizeInBytes());
+		m.setStream("out_image", CPUTypes.INT32, size * CPUTypes.INT32.sizeInBytes());
+		return m;
+	}
+}

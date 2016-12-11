@@ -1,0 +1,28 @@
+/**
+ * Abdulwahab Alkharashi
+ */
+ 
+package complex;
+
+import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
+import com.maxeler.maxcompiler.v2.kernelcompiler.KernelParameters;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplex;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.composite.DFEComplexType;
+
+class ComplexKernel extends Kernel {
+	public DFEComplexType cplxType =
+		new DFEComplexType(dfeFloat(8,24));
+
+	ComplexKernel(KernelParameters parameters) {
+		super(parameters);
+
+		// Inputs
+		DFEComplex cplxIn1 = io.input("cplxIn1", cplxType);
+		DFEComplex cplxIn2 = io.input("cplxIn2", cplxType);
+
+		DFEComplex result = (cplxIn1 + cplxIn2) * 3;
+
+		// Output
+		io.output("cplxOut", result, cplxType);
+	}
+}

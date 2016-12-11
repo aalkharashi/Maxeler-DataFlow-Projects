@@ -1,0 +1,40 @@
+/**
+ * Document: MaxCompiler Tutorial (maxcompiler-tutorial.pdf)
+ * Chapter: 11      Example: 1      Name: Simple controlled Input
+ * MaxFile name: SimpleControlledInput
+ * Summary:
+ *    Manager for the kernel design using a controlled input.
+ */
+package simplecontrolledinput;
+
+import com.maxeler.maxcompiler.v2.build.EngineParameters;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.CPUTypes;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.EngineInterface;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.InterfaceParam;
+import com.maxeler.maxcompiler.v2.managers.standard.Manager;
+import com.maxeler.maxcompiler.v2.managers.standard.Manager.IOType;
+
+class SimpleControlledInputManager {
+
+	public static void main(String[] args) {
+		Manager m = new Manager(new EngineParameters(args));
+		m.setKernel(new SimpleControlledInputKernel(m.makeKernelParameters()));
+		m.setIO(IOType.ALL_CPU);
+		m.createSLiCinterface(interfaceDefault());
+		m.build();
+	}
+
+	private static EngineInterface interfaceDefault() {
+		EngineInterface ei = new EngineInterface();
+		InterfaceParam n = ei.addParam("N", CPUTypes.INT);
+		ei.setTicks("SimpleControlledInputKernel", n);
+		CPUTypes streamType = CPUTypes.UINT32;
+		InterfaceParam sizeBytes = n * streamType.sizeInBytes();
+		ei.setStream("a", streamType, sizeBytes);
+		ei.setStream("b", streamType, sizeBytes);
+		ei.setStream("c", CPUTypes.INT8, n * CPUTypes.INT8.sizeInBytes());
+		ei.setStream("y", streamType, sizeBytes);
+		return ei;
+	}
+
+}
